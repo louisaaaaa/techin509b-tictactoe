@@ -30,9 +30,9 @@ if __name__ == '__main__':
             print("X's turn!")
         else:
             print("O's turn!")
-        # TODO: Show the board to the user.
+        # Show the board to the user.
         print_board(board)
-        # TODO: Input a move from the player.
+        # Input a move from the player.
         try:
             x,y = input("Input x y axis, use space to seperate: ").split()
         except:
@@ -43,12 +43,12 @@ if __name__ == '__main__':
             if  board[int(x)][int(y)] != " ": # already has value
                 print("Already has value, please try to place at empty spot")
                 continue
-            # TODO: Update the board.
+            # Update the board.
             if turn: 
                 board[int(x)][int(y)] = 'X'
             else:
                 board[int(x)][int(y)] = 'O'
-            # TODO: Update who's turn it is.
+            # Update who's turn it is.
             turn = not turn
             count += 1
             # See if anyone wins
