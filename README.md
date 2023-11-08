@@ -1,5 +1,12 @@
 # techin509b-tictactoe
-Tic Tac Toe assignment code. 
+New version of Tic Tac Toe assignment.
+Supports bot player for tictactoe.
+Class and logics in tictactoe.py
+Game play in main.py
+Run using ```python main.py```
+
+
+Original Tic Tac Toe assignment code. 
 - [x] use your game winning logic function from earlier
 - [x] show the board to the user in the command line
 - [x] accept an input from a user
