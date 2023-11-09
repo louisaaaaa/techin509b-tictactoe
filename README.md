@@ -3,7 +3,9 @@ New version of Tic Tac Toe assignment.
 Supports bot player for tictactoe.
 Class and logics in tictactoe.py
 Game play in main.py
+
 Run using ```python main.py```
+
 
 
 Original Tic Tac Toe assignment code. 
