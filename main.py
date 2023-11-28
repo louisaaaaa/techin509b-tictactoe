@@ -1,4 +1,5 @@
 from tictactoe import Game, Human, Bot
+import pandas as pd
 
 # Game play for tictactoe
 start_game = False
@@ -8,12 +9,17 @@ game_mode = input("Please type in one or two to indicate your choice: ")
 while start_game == False:
     if game_mode == "one":
         print("You have chosen single player:")
-        game = Game(Human(), Bot())
+        xname = input("Please enter your name: ")
+        game = Game(Human(), Bot(), xname, None)
         start_game = True
+       
     elif game_mode == "two":
         print("You have chosen two players:")
-        game = Game(Human(), Human())
+        xname = input("Please enter playerX's name: ")
+        yname = input("Please enter playerY's name: ")
+        game = Game(Human(), Human(), xname, yname)
         start_game = True
+       
     else:
         print("Input not recognizable, please try again")
         game_mode = input("Please type in one or two to indicate your choice: ")

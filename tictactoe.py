@@ -1,5 +1,7 @@
 # Class and functions for TicTacToe by Louisa
 import random
+import pandas as pd
+
 class Board:
     def __init__(self):
         self._rows = [
@@ -59,10 +61,13 @@ class Board:
 
 class Game:
 
-    def __init__(self, playerX, playerO):
+    def __init__(self, playerX, playerO, playerX_name, playerY_name):
         self._board = Board()
         self._playerX = playerX
         self._playerO = playerO
+        self._playerX_name = playerX_name
+        self._playerY_name = playerY_name
+        
 
     def run(self):
         winner = None
@@ -86,15 +91,33 @@ class Game:
                 print("Please try again")
                 
             print("\n>>>>>>>>>>>>>>>>>>>>>>>")
-            winner = self._board.check()
             if self._board.check_draw():
                 winner = "Draw"
+            winner = self._board.check()
+            
             
         print(self._board)
+        try:
+            df = pd.read_csv("database.csv")
+        except FileNotFoundError:
+            # If the file doesn't exist, create an empty DataFrame with the required columns
+            df = pd.DataFrame(columns=['Name', 'Win', 'Lose', 'Draw'])
+            
         if winner != "Draw":
             print(f'Player {winner} wins!')
+            if winner == 'X': 
+                df = update_win(df, self._playerX_name)
+                df = update_lose(df, self._playerY_name)
+                df.to_csv("database.csv", index=False)
+            elif winner == 'Y': 
+                df = update_win(df, self._playerY_name)
+                df = update_lose(df, self._playerX_name)
+                df.to_csv("database.csv", index=False)
         else:
             print("It's a draw!")
+            df = update_draw(df, self._playerY_name)
+            df = update_draw(df, self._playerX_name)
+            df.to_csv("database.csv", index=False)
 
 class Human:
     def play_move(self, board):
@@ -124,3 +147,33 @@ class Bot:
             y = random.randrange(0,3)
             if board.get(x,y) == None:
                 return x, y
+            
+# Write to csv
+def update_win(df, name):
+    # Check if the name exists in the DataFrame
+    if name in df['Name'].values:
+        # Update the 'Win' column for the specified name
+        df.loc[df['Name'] == name, 'Win'] += 1
+    else:
+        # If the name doesn't exist, add a new row with the provided information
+        new_row = pd.DataFrame({'Name': [name], 'Win': [1], 'Lose': [0], 'Draw': [0]})
+        df = pd.concat([df, new_row], ignore_index=True)
+    return df
+
+def update_lose(df, name):
+    # Check if the name exists in the DataFrame
+    if name in df['Name'].values:
+        df.loc[df['Name'] == name, 'Lose'] += 1
+    else:
+        new_row = pd.DataFrame({'Name': [name], 'Win': [0], 'Lose': [1], 'Draw': [0]})
+        df = pd.concat([df, new_row], ignore_index=True)
+    return df
+
+def update_draw(df, name):
+    # Check if the name exists in the DataFrame
+    if name in df['Name'].values:
+        df.loc[df['Name'] == name, 'Draw'] += 1
+    else:
+        new_row = pd.DataFrame({'Name': [name], 'Win': [0], 'Lose': [0], 'Draw': [1]})
+        df = pd.concat([df, new_row], ignore_index=True)
+    return df
