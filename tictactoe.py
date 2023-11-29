@@ -118,7 +118,7 @@ class Game:
                 df = update_lose(df, self._playerY_name)
                 df.to_csv("database.csv", index=False)
                 # Log for linear regression
-                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Win']})
+                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': [1]})
                 df1 = pd.concat([df1, new_row])
                 df1.to_csv("database_win_loc.csv", index=False)
                 
@@ -127,7 +127,7 @@ class Game:
                 df = update_lose(df, self._playerX_name)
                 df.to_csv("database.csv", index=False)
                # Log for linear regression
-                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Lose']})
+                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': [-1]})
                 df1 = pd.concat([df1, new_row])
                 df1.to_csv("database_win_loc.csv", index=False)
                 
@@ -138,7 +138,7 @@ class Game:
             df.to_csv("database.csv", index=False)
             
             # Log for linear regression
-            new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Draw']})
+            new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': [0]})
             df1 = pd.concat([df1, new_row])
             df1.to_csv("database_win_loc.csv", index=False)
 
