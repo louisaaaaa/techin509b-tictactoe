@@ -9,8 +9,8 @@ game_mode = input("Please type in one or two to indicate your choice: ")
 while start_game == False:
     if game_mode == "one":
         print("You have chosen single player:")
-        xname = input("Please enter your name: ")
-        game = Game(Human(), Bot(), xname, None)
+        # xname = input("Please enter your name: ")
+        game = Game(Human(), Bot(), None, None)
         start_game = True
        
     elif game_mode == "two":

@@ -72,6 +72,9 @@ class Game:
     def run(self):
         winner = None
         current_player = self._playerX
+        first_step = False
+        first_x = 0
+        first_y = 0
         while winner == None:
             if current_player == self._playerX:
                 print("Player X's turn")
@@ -80,6 +83,10 @@ class Game:
             
             try:
                 x,y = current_player.play_move(self._board)
+                if first_step == False:
+                    first_x = x
+                    first_y = y
+                    first_step = True
                 # playmove
                 if current_player == self._playerX:
                     self._board.set(int(x),int(y),"X")
@@ -99,6 +106,7 @@ class Game:
         print(self._board)
         try:
             df = pd.read_csv("database.csv")
+            df1 = pd.read_csv("database_win_loc.csv")
         except FileNotFoundError:
             # If the file doesn't exist, create an empty DataFrame with the required columns
             df = pd.DataFrame(columns=['Name', 'Win', 'Lose', 'Draw'])
@@ -109,15 +117,30 @@ class Game:
                 df = update_win(df, self._playerX_name)
                 df = update_lose(df, self._playerY_name)
                 df.to_csv("database.csv", index=False)
+                # Log for linear regression
+                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Win']})
+                df1 = pd.concat([df1, new_row])
+                df1.to_csv("database_win_loc.csv", index=False)
+                
             elif winner == 'Y': 
                 df = update_win(df, self._playerY_name)
                 df = update_lose(df, self._playerX_name)
                 df.to_csv("database.csv", index=False)
+               # Log for linear regression
+                new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Lose']})
+                df1 = pd.concat([df1, new_row])
+                df1.to_csv("database_win_loc.csv", index=False)
+                
         else:
             print("It's a draw!")
             df = update_draw(df, self._playerY_name)
             df = update_draw(df, self._playerX_name)
             df.to_csv("database.csv", index=False)
+            
+            # Log for linear regression
+            new_row = pd.DataFrame({'X': [first_x], 'Y': [first_y], 'Result': ['Draw']})
+            df1 = pd.concat([df1, new_row])
+            df1.to_csv("database_win_loc.csv", index=False)
 
 class Human:
     def play_move(self, board):
